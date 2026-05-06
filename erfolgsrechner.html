@@ -113,7 +113,7 @@ body{background:#f0f7f3;min-height:100vh}
       <div class="date-row">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8aab96" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         <input id="goalDate" type="date" style="font-size:11px;color:#8aab96;border:none;background:transparent;outline:none"
-          oninput="updateDays();saveSettings()" onblur="updateDays();saveSettings()"/>
+          />
       </div>
       <div style="height:0.5px;background:#eef5f1;margin-bottom:8px"></div>
       <div class="days-inline">
@@ -459,7 +459,13 @@ function addMember(){
   renderAll();scheduleSave();
 }
 
-document.getElementById('goalDate').addEventListener('change',()=>{updateDays();saveSettings();});
+
+// Date fix for iOS Safari - fires on change, blur and focus out
+const goalDateEl = document.getElementById('goalDate');
+['change','blur','input'].forEach(evt => {
+  goalDateEl.addEventListener(evt, () => { updateDays(); saveSettings(); });
+});
+
 </script>
 </body>
 </html>
